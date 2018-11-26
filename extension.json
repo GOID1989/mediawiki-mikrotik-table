@@ -1,0 +1,39 @@
+{
+	"name": "Mikrotik Table",
+	"version": "1.0.0",
+	"author": [
+		"GOID"
+	],
+	"url": "https://www.mediawiki.org/wiki/Extension:MikrotikTable",
+	"descriptionmsg": "mikrotiktable-desc",
+	"license-name": "MIT",
+	"type": "parserhook",
+	"AutoloadClasses": {
+		"MikrotikTableHooks": "MikrotikTable.hooks.php"
+	},
+	"Hooks": {
+		"ParserFirstCallInit": [
+		"MikrotikTableHooks::onParserFirstCallInit"
+		]
+	},
+	"MessagesDirs": {
+		"MikrotikTable": [
+			"i18n"
+		]
+	},
+	"ResourceModules": {
+		"ext.mikrotikTable": {
+			"scripts": [],
+			"styles": [
+				"modules/ext.mikrotikTable.css"
+			],
+			"messages": [],
+			"dependencies": []
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "",
+		"remoteExtPath": "MikrotikTable"
+	},
+	"manifest_version": 1
+}

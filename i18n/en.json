@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"GOID"
+		]
+	},
+	"mikrotiktable-desc": "Insert configuration of Mikrotik NAT/Firewall rules",
+	"mikrotiktable-connection-error": "Connection error"
+}

@@ -1,0 +1,21 @@
+{
+	"@metadata": {
+		"authors": [
+			"GOID"
+		]
+	},
+	"mikrotiktable-desc": "Расширение для вставки информации (NAT/Firewall) из устройства Mikrotik",
+	"mikrotiktable-connection-error": "Ошибка подключения",
+	".id":	"№",
+	"chain":	"Цепочка",
+	"action":	"Действие",
+	"to-ports":	"Порты перенаправления",
+	"protocol":	"Протокол",
+	"dst-port":	"Порты назначения",
+	"bytes":	"Байты",
+	"packets":	"Пакеты",
+	"disabled":	"Отключено",
+	"to-addresses":	"Адрес перенаправления",
+	"src-address":	"Адрес источник",
+	"dst-address":	"Адрес назначения"
+}
