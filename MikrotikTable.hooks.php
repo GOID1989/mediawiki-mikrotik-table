@@ -88,6 +88,10 @@ class MikrotikTableHooks {
 	} 
 	
 	public static function mikrotikTableRender( $input, array $args, Parser $parser, PPFrame $frame ) {
+		static $hasRun = false;
+		if ($hasRun) return;
+		$hasRun = true;
+
 		$parser->disableCache();
 		$parser->getOutput()->addModuleStyles( array('ext.mikrotikTable') );
 
@@ -107,7 +111,23 @@ class MikrotikTableHooks {
 		if(isset($args['lng'])) { $language = $args['lng']; }
 		#Show only specified columns names
 		if(isset($args['columns'])) { $allowed_columns = explode(",", $args['columns']); } 
-		
+
+		# NEED USING MONADO-STYLE (ATOMIC OPERATION)
+		$dbr = wfGetDB( DB_REPLICA );
+		$res = $dbr->select(
+			'mt_cache_rules',                                   // $table The table to query FROM (or array of tables)
+			array( 'm_html' ),            // $vars (columns of the table to SELECT)
+			array( "m_date_taken > NOW() - INTERVAL 1 HOUR", "m_ip = '".$args['ip']."'"),                              // $conds (The WHERE conditions)
+			__METHOD__,                                   // $fname The current __METHOD__ (for performance tracking)
+			array( 'ORDER BY' => 'm_date_taken DESC', 'LIMIT' => '1')        // $options = array()
+		);
+		if(count($res) > 0 ) {
+			#print_r($res);
+			foreach($res as $row) {
+				return $row->m_html . htmlspecialchars( $input );
+			}
+		}
+
 		$API = new RouterosAPI();
 		#$API->debug = true;
 		$API->attempts = 1;
@@ -142,8 +162,28 @@ class MikrotikTableHooks {
 				$tbl2 .= (new self)->buildRow($arr, $columns);
 			}
 			$API->disconnect();
-			return $tbl2."</table>\n\n". htmlspecialchars( $input );;
+			
+			$dbw = wfGetDB( DB_MASTER );
+			$dbw->insert(
+				'mt_cache_rules',
+				array(
+					'm_html' => $tbl2."</table>",
+					'm_ip' => "192.168.88.1",
+					'm_date_taken' => date( 'Y-m-d H:i:s' )
+				),
+				__METHOD__
+			);
+
+			return $tbl2."</table>\n\n". htmlspecialchars( $input );
 		}
 		else { return wfMessage( "mikrotiktable-connection-error" ); }
 	}
+
+	public static function addTables( $updater ) {
+		$dir = dirname( __FILE__ );
+		$file = "$dir/mikrotik_table.sql";
+		$updater->addExtensionUpdate( array( 'addTable', 'mt_cache_rules', $file, true ) );
+		return true;
+	}
+
 }

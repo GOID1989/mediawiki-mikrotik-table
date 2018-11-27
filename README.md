@@ -16,3 +16,5 @@ Add module styling, translating
  
 ## Tested
  - Mikrotik (ROS 6.40.5)
+ - MediaWiki 1.28.2
+ - PHP 5.6.31 (apache2handler)
