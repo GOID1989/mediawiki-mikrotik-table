@@ -17,7 +17,7 @@ Start editing page, add ```<mikrotik />``` tag with options:
  
 Example:
 ```html
-<mikrotik ip="192.168.88.1" port="8729" login="wm" cache="false" password="pwsMfdas&*9gd8" lng="ru" table="nat" comment="line" columns=".id,chain,action,src-address,dst-address,to-ports,protocol,comment,dst-port,bytes,packets,to-addresses" />
+<mikrotik ip="192.168.88.1" port="8729" login="wm" cache="false" password="bestpassword" lng="ru" table="nat" comment="line" columns=".id,chain,action,src-address,dst-address,to-ports,protocol,comment,dst-port,bytes,packets,to-addresses" />
 ```
  
 ## Features
