@@ -162,16 +162,13 @@ class MikrotikTableHooks {
 			}
 			$API->disconnect();
 
-			# Write to cache
+			# Write\update to cache
 			$dbw = wfGetDB( DB_MASTER );
-			$dbw->insert(
-				'mt_cache_rules',
-				array(
-					'm_html' => $tbl2."</table>",
-					'm_ip' => $args['ip'],
-					'm_date_taken' => date( 'Y-m-d H:i:s' )
-				),
-				__METHOD__
+			$dbw->upsert( 'mt_cache_rules',
+				array( 'm_html' => $tbl2."</table>", 'm_ip' => $args['ip'], 'm_date_taken' => date( 'Y-m-d H:i:s' )),
+				array('m_ip'),
+				array('m_html' => $tbl2."</table>", 'm_date_taken' => date( 'Y-m-d H:i:s' )),
+				__METHOD__ 
 			);
 
 			return $tbl2."</table>\n\n". htmlspecialchars( $input );
