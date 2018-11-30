@@ -57,7 +57,7 @@ class MikrotikTableHooks {
 				case "netmap":
 					 $div_icon = '<div class="mt-div-default action-nat"></div>';
 					break;
-				}	
+				}
 			}
 
 			$column_value = "";
@@ -112,17 +112,16 @@ class MikrotikTableHooks {
 		#Show only specified columns names
 		if(isset($args['columns'])) { $allowed_columns = explode(",", $args['columns']); } 
 
-		# NEED USING MONADO-STYLE (ATOMIC OPERATION)
+		# Check cache record
 		$dbr = wfGetDB( DB_REPLICA );
 		$res = $dbr->select(
-			'mt_cache_rules',                                   // $table The table to query FROM (or array of tables)
-			array( 'm_html' ),            // $vars (columns of the table to SELECT)
-			array( "m_date_taken > NOW() - INTERVAL 1 HOUR", "m_ip = '".$args['ip']."'"),                              // $conds (The WHERE conditions)
-			__METHOD__,                                   // $fname The current __METHOD__ (for performance tracking)
-			array( 'ORDER BY' => 'm_date_taken DESC', 'LIMIT' => '1')        // $options = array()
+			'mt_cache_rules',
+			array( 'm_html' ),
+			array( "m_date_taken > NOW() - INTERVAL 1 HOUR", "m_ip = '".$args['ip']."'"),
+			__METHOD__,
+			array( 'ORDER BY' => 'm_date_taken DESC', 'LIMIT' => '1')
 		);
 		if(count($res) > 0 ) {
-			#print_r($res);
 			foreach($res as $row) {
 				return $row->m_html . htmlspecialchars( $input );
 			}
@@ -162,13 +161,14 @@ class MikrotikTableHooks {
 				$tbl2 .= (new self)->buildRow($arr, $columns);
 			}
 			$API->disconnect();
-			
+
+			# Write to cache
 			$dbw = wfGetDB( DB_MASTER );
 			$dbw->insert(
 				'mt_cache_rules',
 				array(
 					'm_html' => $tbl2."</table>",
-					'm_ip' => "192.168.88.1",
+					'm_ip' => $args['ip'],
 					'm_date_taken' => date( 'Y-m-d H:i:s' )
 				),
 				__METHOD__
