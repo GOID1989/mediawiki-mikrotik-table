@@ -13,6 +13,7 @@ Start editing page, add line with <mikrotik /> tag with options:
  - Comment - comments style: separated line or column. Optional (default column)
  - Columns - list of rule properties to display. Optional (default all unique properties)
  - Lng - allow to set specific language for column names. Optional (default MW Language, avaliable en\ru)
+ - Cache - on/off cache usage. Optional (default on)
  
 Example:
 ```html
@@ -22,7 +23,7 @@ Example:
 ## Features
  - Styling rows
  - Translating\renaming (column names)
- - Data cache
+ - Data cache (once )
  - Column reordering (use column parameter to reorder)
  
 ## Prerequisites
@@ -35,7 +36,7 @@ Example:
 ## TODO
  - [ ] Expanding access lists
  - [ ] Option to create tabbed control
- - [x] Store "cache" in DB
+ - [ ] Store "cache" in DB with on\off
  - [ ] Store in DB passwords
  - [ ] Line/inline check restyle code to column\line
  

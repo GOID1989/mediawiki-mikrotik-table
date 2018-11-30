@@ -100,7 +100,8 @@ class MikrotikTableHooks {
 		$language = $wgLanguageCode;
 		$allowed_columns = "";
 		$firewall_table = "nat";
-
+		$db_cache = true;
+		
 		# Checks minimal conf
 		if(!isset($args['ip'])) { return "IP not set"; }
 		if(!isset($args['login'])) { return "Login not set"; }
@@ -109,21 +110,25 @@ class MikrotikTableHooks {
 		if(isset($args['comment'])) { $comment_style = $args['comment'] == "line" ? "line" : $comment_style; }
 		if(isset($args['table'])) { $firewall_table = $args['table'] == "filter" ? "filter" : $firewall_table; }
 		if(isset($args['lng'])) { $language = $args['lng']; }
+		if(isset($args['cache'])) { $db_cache = $args['cache'] == "true" ? true : false; }
+		
 		#Show only specified columns names
 		if(isset($args['columns'])) { $allowed_columns = explode(",", $args['columns']); } 
 
 		# Check cache record
-		$dbr = wfGetDB( DB_REPLICA );
-		$res = $dbr->select(
-			'mt_cache_rules',
-			array( 'm_html' ),
-			array( "m_date_taken > NOW() - INTERVAL 1 HOUR", "m_ip = '".$args['ip']."'"),
-			__METHOD__,
-			array( 'ORDER BY' => 'm_date_taken DESC', 'LIMIT' => '1')
-		);
-		if(count($res) > 0 ) {
-			foreach($res as $row) {
-				return $row->m_html . htmlspecialchars( $input );
+		if($db_cache){
+			$dbr = wfGetDB( DB_REPLICA );
+			$res = $dbr->select(
+				'mt_cache_rules',
+				array( 'm_html' ),
+				array( "m_date_taken > NOW() - INTERVAL 1 HOUR", "m_ip = '".$args['ip']."'"),
+				__METHOD__,
+				array( 'ORDER BY' => 'm_date_taken DESC', 'LIMIT' => '1')
+			);
+			if(count($res) > 0 ) {
+				foreach($res as $row) {
+					return $row->m_html . htmlspecialchars( $input );
+				}
 			}
 		}
 
@@ -162,16 +167,17 @@ class MikrotikTableHooks {
 			}
 			$API->disconnect();
 
-			# Write\update to cache
-			$dbw = wfGetDB( DB_MASTER );
-			$dbw->upsert( 'mt_cache_rules',
-				array( 'm_html' => $tbl2."</table>", 'm_ip' => $args['ip'], 'm_date_taken' => date( 'Y-m-d H:i:s' )),
-				array('m_ip'),
-				array('m_html' => $tbl2."</table>", 'm_date_taken' => date( 'Y-m-d H:i:s' )),
-				__METHOD__ 
-			);
-
-			return $tbl2."</table>\n\n". htmlspecialchars( $input );
+			if($db_cache){
+				# Write\update to cache
+				$dbw = wfGetDB( DB_MASTER );
+				$dbw->upsert( 'mt_cache_rules',
+					array( 'm_html' => $tbl2."</table>", 'm_ip' => $args['ip'], 'm_date_taken' => date( 'Y-m-d H:i:s' )),
+					array('m_ip'),
+					array('m_html' => $tbl2."</table>", 'm_date_taken' => date( 'Y-m-d H:i:s' )),
+					__METHOD__ 
+				);
+			}
+			return $tbl2."</table>". htmlspecialchars( $input );
 		}
 		else { return wfMessage( "mikrotiktable-connection-error" ); }
 	}
