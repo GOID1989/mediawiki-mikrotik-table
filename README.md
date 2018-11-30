@@ -4,7 +4,7 @@ Tag extension for Mediawiki adding support parse <mikrotik /> html-like-tag on p
 Extension use external API php-lib to connect Mikrotik device and get data.
 
 ## Usage
-Start editing page, add line with <mikrotik /> tag with options:
+Start editing page, add ```<mikrotik />``` tag with options:
  - IP - address of device. Required
  - Login - Username with access. Required
  - Password - Password of user. Required
@@ -17,7 +17,7 @@ Start editing page, add line with <mikrotik /> tag with options:
  
 Example:
 ```html
-<mikrotik ip="192.168.88.1" port="8729" login="wm" password="bestofthebest" table="nat" comment="line" columns=".id,chain,action,src-address,dst-address,to-ports,protocol,dst-port,bytes,packets,to-addresses" />
+<mikrotik ip="192.168.88.1" port="8729" login="wm" cache="false" password="pwsMfdas&*9gd8" lng="ru" table="nat" comment="line" columns=".id,chain,action,src-address,dst-address,to-ports,protocol,comment,dst-port,bytes,packets,to-addresses" />
 ```
  
 ## Features
@@ -36,9 +36,8 @@ Example:
 ## TODO
  - [ ] Expanding access lists
  - [ ] Option to create tabbed control
- - [ ] Store "cache" in DB with on\off
+ - [x] Store "cache" in DB with on\off
  - [ ] Store in DB passwords
- - [ ] Line/inline check restyle code to column\line
  
 ## Tested
  - Mikrotik (ROS 6.40.5)

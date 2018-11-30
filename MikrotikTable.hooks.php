@@ -8,7 +8,7 @@
 require_once( 'routeros_api.class.php' );
 
 class MikrotikTableHooks {
-	private $comment_style = "inline";
+	private $comment_style = "column";
 
 	public static function onParserFirstCallInit( Parser $parser ) {
 		$parser->setHook( 'mikrotik', array ('MikrotikTableHooks','mikrotikTableRender') );
