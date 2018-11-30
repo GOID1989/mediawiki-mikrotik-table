@@ -15,7 +15,7 @@ Start editing page, add line with <mikrotik /> tag with options:
  - Lng - allow to set specific language for column names. 
  
 Example:
-    <mikrotik ip="192.168.88.1" port="8729" login="wm" password="bestofthebest" table="nat" comment="line" columns=".id,chain,action,src-address,dst-address,to-ports,protocol,dst-port,bytes,packets,to-addresses" />
+```<mikrotik ip="192.168.88.1" port="8729" login="wm" password="bestofthebest" table="nat" comment="line" columns=".id,chain,action,src-address,dst-address,to-ports,protocol,dst-port,bytes,packets,to-addresses" />```
  
 ## Features
  - Styling
@@ -30,11 +30,11 @@ Example:
  - Run update.php to prepare MW Database
  
 ## TODO
- - [] Expanding access lists
- - [] Option to create tabbed control
+ - [ ] Expanding access lists
+ - [ ] Option to create tabbed control
  - [x] Store "cache" in DB
- - [] Store in DB passwords
- - [] Line/inline check restyle code to column\line
+ - [ ] Store in DB passwords
+ - [ ] Line/inline check restyle code to column\line
  
 ## Tested
  - Mikrotik (ROS 6.40.5)
