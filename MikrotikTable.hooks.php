@@ -8,7 +8,7 @@
 require_once( 'routeros_api.class.php' );
 
 class MikrotikTableHooks {
-	private $comment_style = "inline";
+	private $comment_style = "column";
 
 	public static function onParserFirstCallInit( Parser $parser ) {
 		$parser->setHook( 'mikrotik', array ('MikrotikTableHooks','mikrotikTableRender') );
@@ -57,7 +57,7 @@ class MikrotikTableHooks {
 				case "netmap":
 					 $div_icon = '<div class="mt-div-default action-nat"></div>';
 					break;
-				}	
+				}
 			}
 
 			$column_value = "";
@@ -88,6 +88,10 @@ class MikrotikTableHooks {
 	} 
 	
 	public static function mikrotikTableRender( $input, array $args, Parser $parser, PPFrame $frame ) {
+		static $hasRun = false;
+		if ($hasRun) return;
+		$hasRun = true;
+
 		$parser->disableCache();
 		$parser->getOutput()->addModuleStyles( array('ext.mikrotikTable') );
 

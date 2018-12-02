@@ -5,5 +5,6 @@
 		]
 	},
 	"mikrotiktable-desc": "Insert configuration of Mikrotik NAT/Firewall rules",
-	"mikrotiktable-connection-error": "Connection error"
+	"mikrotiktable-connection-error": "Connection error",
+	"dst-address":	"Destionation address"
 }
