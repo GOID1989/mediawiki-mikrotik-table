@@ -146,7 +146,7 @@ class MikrotikTableHooks {
 				$tbl2 .= (new self)->buildRow($arr, $columns);
 			}
 			$API->disconnect();
-			return $tbl2."</table>\n\n". htmlspecialchars( $input );;
+			return $tbl2."</table>". htmlspecialchars( $input );;
 		}
 		else { return wfMessage( "mikrotiktable-connection-error" ); }
 	}
